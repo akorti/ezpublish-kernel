@@ -47,6 +47,13 @@ class Content extends AbstractParser
                             ->end()
                         ->end()
                     ->end()
+                    ->arrayNode('field_groups')
+                        ->info('Definitions of fields groups.')
+                        ->children()
+                            ->arrayNode('list')->prototype('scalar')->end()->end()
+                            ->scalarNode('default')->defaultValue('content')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
     }
@@ -70,6 +77,12 @@ class Content extends AbstractParser
                         $currentScope,
                         $scopeSettings['content']['tree_root']['excluded_uri_prefixes']
                     );
+                }
+                if (isset($scopeSettings['content']['field_groups']['list'])) {
+                    $contextualizer->setContextualParameter('content.field_groups.list', $currentScope, $scopeSettings['content']['field_groups']['list']);
+                }
+                if (isset($scopeSettings['content']['field_groups']['default'])) {
+                    $contextualizer->setContextualParameter('content.field_groups.default', $currentScope, $scopeSettings['content']['field_groups']['default']);
                 }
             }
         }
